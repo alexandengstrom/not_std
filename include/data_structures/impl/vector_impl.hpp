@@ -1,7 +1,7 @@
-#include "../common/common_defs.hpp"
+#include "../../common/common_defs.hpp"
 
 template <typename T>
-not_std::vector<T>::vector() : current_size(0), capacity(0), data(nullptr) {}
+not_std::vector<T>::vector() : data{nullptr}, current_size{0}, capacity{0} {}
 
 template <typename T>
 T &not_std::vector<T>::operator[](u_int index)

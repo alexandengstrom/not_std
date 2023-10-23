@@ -50,7 +50,7 @@ namespace not_std
         void reallocate(u_int new_capacity);
     };
 
-#include "../not_std_detail/vector_impl.hpp"
+#include "impl/vector_impl.hpp"
 
 }
 

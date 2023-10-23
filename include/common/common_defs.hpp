@@ -5,6 +5,7 @@ namespace not_std
 {
 
     typedef unsigned int u_int;
+    typedef long unsigned int lu_int;
 
 }
 
