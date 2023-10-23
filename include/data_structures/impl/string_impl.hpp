@@ -126,6 +126,53 @@ bool not_std::string::operator!=(const char *cstr) const
     return !(*this == cstr);
 }
 
+not_std::string &not_std::string::operator+=(const not_std::string &other)
+{
+    lu_int new_size = current_size + other.current_size;
+
+    if (new_size >= capacity)
+    {
+        reallocate(new_size);
+    }
+
+    for (lu_int i = 0; i < other.current_size; ++i)
+    {
+        data[current_size + i] = other.data[i];
+    }
+
+    current_size = new_size;
+    data[current_size] = '\0';
+
+    return *this;
+}
+
+not_std::string &not_std::string::operator+=(const char *other)
+{
+    lu_int rhs_length = 0;
+    const char *temp = other;
+    while (*temp++)
+    {
+        ++rhs_length;
+    }
+
+    lu_int new_size = current_size + rhs_length;
+
+    if (new_size >= capacity)
+    {
+        reallocate(new_size);
+    }
+
+    for (lu_int i = 0; i < rhs_length; ++i)
+    {
+        data[current_size + i] = other[i];
+    }
+
+    current_size = new_size;
+    data[current_size] = '\0';
+
+    return *this;
+}
+
 not_std::lu_int not_std::string::length() const noexcept
 {
     return current_size;

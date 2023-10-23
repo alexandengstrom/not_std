@@ -26,13 +26,12 @@ namespace not_std
         bool operator==(const char *cstr) const;
         bool operator!=(const string &other) const;
         bool operator!=(const char *cstr) const;
+        string &operator+=(const string &other);
+        string &operator+=(const char *other);
 
-        // Capacity
         lu_int length() const noexcept;
         bool empty() const noexcept;
         char at(u_int pos) const;
-
-        // Modifiers
         void clear();
         void push_back(char c);
 

@@ -10,8 +10,8 @@ This is a project I started to learn more about data structures. My goal is to i
 - [x] unordered_map
 - [x] pair
 - [x] string
+- [x] priority_queue
 - [ ] queue
 - [ ] list
 - [ ] set
-- [ ] priority_queue
 - [ ] stack

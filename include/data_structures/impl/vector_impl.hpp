@@ -4,6 +4,29 @@ template <typename T>
 not_std::vector<T>::vector() : data{nullptr}, current_size{0}, capacity{0} {}
 
 template <typename T>
+not_std::vector<T>::vector(const not_std::vector<T> &other)
+    : data(nullptr), current_size(other.current_size), capacity(other.capacity)
+{
+    if (other.data)
+    {
+        data = new T[capacity];
+        for (u_int i{0}; i < current_size; ++i)
+        {
+            data[i] = other.data[i];
+        }
+    }
+}
+
+template <typename T>
+not_std::vector<T>::vector(not_std::vector<T> &&other) noexcept
+    : data(other.data), current_size(other.current_size), capacity(other.capacity)
+{
+    other.data = nullptr;
+    other.current_size = 0;
+    other.capacity = 0;
+}
+
+template <typename T>
 not_std::vector<T>::~vector()
 {
     delete[] data;
@@ -19,6 +42,29 @@ template <typename T>
 const T &not_std::vector<T>::operator[](u_int index) const
 {
     return data[index];
+}
+
+template <typename T>
+not_std::vector<T> &not_std::vector<T>::operator=(const vector<T> &other)
+{
+    if (this != &other)
+    {
+        if (data)
+        {
+            delete[] data;
+        }
+
+        current_size = other.current_size;
+        capacity = other.capacity;
+        data = new T[capacity];
+
+        for (u_int i = 0; i < current_size; ++i)
+        {
+            data[i] = other.data[i];
+        }
+    }
+
+    return *this;
 }
 
 template <typename T>
@@ -75,7 +121,6 @@ void not_std::vector<T>::clear() noexcept
     delete[] data;
     data = nullptr;
     current_size = 0;
-    capacity = 0;
 }
 
 template <typename T>
@@ -118,61 +163,69 @@ void not_std::vector<T>::reallocate(u_int new_capacity)
 }
 
 template <typename T>
-typename not_std::vector<T>::iterator not_std::vector<T>::begin() noexcept
+not_std::vector<T>::iterator::iterator(T *p) : ptr(p) {}
+
+template <typename T>
+typename not_std::vector<T>::iterator &not_std::vector<T>::iterator::operator++()
 {
-    return data;
+    ++ptr;
+    return *this;
 }
 
 template <typename T>
-typename not_std::vector<T>::iterator not_std::vector<T>::end() noexcept
+T &not_std::vector<T>::iterator::operator*() const
 {
-    return data + current_size;
+    return *ptr;
 }
 
 template <typename T>
-typename not_std::vector<T>::const_iterator not_std::vector<T>::begin() const noexcept
+bool not_std::vector<T>::iterator::operator!=(const not_std::vector<T>::iterator &other) const
 {
-    return data;
+    return ptr != other.ptr;
 }
 
 template <typename T>
-typename not_std::vector<T>::const_iterator not_std::vector<T>::end() const noexcept
+typename not_std::vector<T>::iterator not_std::vector<T>::begin()
 {
-    return data + current_size;
+    return iterator(data);
 }
 
 template <typename T>
-typename not_std::vector<T>::const_iterator not_std::vector<T>::cbegin() const noexcept
+typename not_std::vector<T>::iterator not_std::vector<T>::end()
 {
-    return data;
+    return iterator(data + current_size);
 }
 
 template <typename T>
-typename not_std::vector<T>::const_iterator not_std::vector<T>::cend() const noexcept
+not_std::vector<T>::reverse_iterator::reverse_iterator(T *ptr) : ptr(ptr) {}
+
+template <typename T>
+typename not_std::vector<T>::reverse_iterator &not_std::vector<T>::reverse_iterator::operator++()
 {
-    return data + current_size;
+    --ptr;
+    return *this;
 }
 
 template <typename T>
-typename not_std::vector<T>::reverse_iterator not_std::vector<T>::rbegin() noexcept
+T &not_std::vector<T>::reverse_iterator::operator*() const
 {
-    return data + current_size - 1;
+    return *ptr;
 }
 
 template <typename T>
-typename not_std::vector<T>::reverse_iterator not_std::vector<T>::rend() noexcept
+bool not_std::vector<T>::reverse_iterator::operator!=(const not_std::vector<T>::reverse_iterator &other) const
 {
-    return data - 1;
+    return ptr != other.ptr;
 }
 
 template <typename T>
-typename not_std::vector<T>::const_reverse_iterator not_std::vector<T>::crbegin() const noexcept
+typename not_std::vector<T>::reverse_iterator not_std::vector<T>::rbegin()
 {
-    return data + current_size - 1;
+    return reverse_iterator(data + current_size - 1);
 }
 
 template <typename T>
-typename not_std::vector<T>::const_reverse_iterator not_std::vector<T>::crend() const noexcept
+typename not_std::vector<T>::reverse_iterator not_std::vector<T>::rend()
 {
-    return data - 1;
+    return reverse_iterator(data - 1);
 }

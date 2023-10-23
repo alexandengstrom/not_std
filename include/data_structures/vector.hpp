@@ -9,18 +9,16 @@ namespace not_std
     class vector
     {
     public:
-        using iterator = T *;
-        using const_iterator = const T *;
-        using reverse_iterator = T *;
-        using const_reverse_iterator = T *;
-
         // Constructors
         vector();
+        vector(const vector<T> &other);
+        vector(not_std::vector<T> &&other) noexcept;
         ~vector();
 
         // Operators
         T &operator[](u_int index);
         const T &operator[](u_int index) const;
+        vector<T> &operator=(const not_std::vector<T> &other);
 
         // Public Member Functions
         bool empty() const noexcept;
@@ -32,16 +30,35 @@ namespace not_std
         void push_back(T &&value);
 
         // Iterators
-        iterator begin() noexcept;
-        iterator end() noexcept;
-        const_iterator begin() const noexcept;
-        const_iterator end() const noexcept;
-        const_iterator cbegin() const noexcept;
-        const_iterator cend() const noexcept;
-        reverse_iterator rbegin() noexcept;
-        reverse_iterator rend() noexcept;
-        const_reverse_iterator crbegin() const noexcept;
-        const_reverse_iterator crend() const noexcept;
+        class iterator
+        {
+        public:
+            iterator(T *p = nullptr);
+            iterator &operator++();
+            T &operator*() const;
+            bool operator!=(const iterator &other) const;
+
+        private:
+            T *ptr;
+        };
+
+        iterator begin();
+        iterator end();
+
+        class reverse_iterator
+        {
+        public:
+            reverse_iterator(T *p = nullptr);
+            reverse_iterator &operator++();
+            T &operator*() const;
+            bool operator!=(const reverse_iterator &other) const;
+
+        private:
+            T *ptr;
+        };
+
+        reverse_iterator rbegin();
+        reverse_iterator rend();
 
     private:
         T *data;
