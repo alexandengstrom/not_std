@@ -16,6 +16,7 @@ namespace not_std
 
         // Constructors
         vector();
+        ~vector();
 
         // Operators
         T &operator[](u_int index);

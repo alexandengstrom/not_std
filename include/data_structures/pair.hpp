@@ -13,6 +13,7 @@ namespace not_std
 
         pair();
         pair(const T1 &a, const T2 &b);
+        pair(const not_std::pair<T1, T2> &other);
         pair &operator=(const pair &p);
         bool operator==(const pair &p) const;
         bool operator!=(const pair &other) const;

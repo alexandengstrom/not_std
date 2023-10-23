@@ -4,6 +4,12 @@ template <typename T>
 not_std::vector<T>::vector() : data{nullptr}, current_size{0}, capacity{0} {}
 
 template <typename T>
+not_std::vector<T>::~vector()
+{
+    delete[] data;
+}
+
+template <typename T>
 T &not_std::vector<T>::operator[](u_int index)
 {
     return data[index];

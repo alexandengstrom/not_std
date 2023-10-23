@@ -11,15 +11,23 @@ namespace not_std
     class unordered_map
     {
     public:
+        // Constructors and destructors
         unordered_map();
+        unordered_map(const unordered_map &other);
+        unordered_map(unordered_map &&other);
+        ~unordered_map();
 
+        // Operators
         V &operator[](const K &key);
         const V &operator[](const K &key) const;
+        unordered_map<K, V> &operator=(const unordered_map<K, V> &other);
+        unordered_map<K, V> &operator=(unordered_map<K, V> &&other);
 
         bool empty() const noexcept;
         u_int size() const noexcept;
         void clear();
         void insert(const K &key, const V &value);
+        lu_int erase(const K &key);
 
     private:
         enum class SlotState

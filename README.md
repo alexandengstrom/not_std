@@ -9,7 +9,7 @@ This is a project I started to learn more about data structures. My goal is to i
 - [x] vector
 - [x] unordered_map
 - [x] pair
-- [ ] string
+- [x] string
 - [ ] queue
 - [ ] list
 - [ ] set

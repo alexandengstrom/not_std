@@ -5,6 +5,10 @@ template <typename T1, typename T2>
 not_std::pair<T1, T2>::pair(const T1 &a, const T2 &b) : first(a), second(b) {}
 
 template <typename T1, typename T2>
+not_std::pair<T1, T2>::pair(const not_std::pair<T1, T2> &other)
+    : first(other.first), second(other.second) {}
+
+template <typename T1, typename T2>
 not_std::pair<T1, T2> &not_std::pair<T1, T2>::operator=(const not_std::pair<T1, T2> &pair)
 {
     if (this != &pair)
