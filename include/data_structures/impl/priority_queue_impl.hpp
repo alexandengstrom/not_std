@@ -117,7 +117,7 @@ template <typename T>
 void not_std::priority_queue<T>::resize(u_int new_capacity)
 {
     T *new_data{new T[new_capacity]};
-    for (size_t i{0}; i < current_size; ++i)
+    for (lu_int i{0}; i < current_size; ++i)
     {
         new_data[i] = data[i];
     }

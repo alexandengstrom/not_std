@@ -1,60 +1,44 @@
 #include "../include/data_structures/pair.hpp"
-#include <iostream>
-#include <cassert>
+#include "test_framework.hpp"
 
-void pair_test_constructor_and_access()
+void register_pair_tests()
 {
+    REGISTER_TEST(pair_tests, ([&]()
+                               {
     not_std::pair<int, int> p{1, 2};
-    assert(p.first == 1);
-    assert(p.second == 2);
-}
+    unit_test(p.first == 1, "Pair constructor and access: first element");
+    unit_test(p.second == 2, "Pair constructor and access: second element"); }));
 
-void pair_test_copy_constructor()
-{
+    REGISTER_TEST(pair_tests, ([&]()
+                               {
     not_std::pair<int, int> original{1, 2};
     not_std::pair<int, int> copy{original};
-    assert(copy.first == 1 && copy.second == 2);
-}
+    unit_test(copy.first == 1 && copy.second == 2, "Pair copy constructor"); }));
 
-void pair_test_assignment_operator()
-{
+    REGISTER_TEST(pair_tests, ([&]()
+                               {
     not_std::pair<int, int> p1{1, 2};
     not_std::pair<int, int> p2;
     p2 = p1;
-    assert(p2.first == 1 && p2.second == 2);
-}
+    unit_test(p2.first == 1 && p2.second == 2, "Pair assignment operator"); }));
 
-void pair_test_equality_operator()
-{
+    REGISTER_TEST(pair_tests, ([&]()
+                               {
     not_std::pair<int, int> p1{1, 2};
     not_std::pair<int, int> p2{1, 2};
-    assert(p1 == p2);
-}
+    unit_test(p1 == p2, "Pair equality operator"); }));
 
-void pair_test_inequality_operator()
-{
+    REGISTER_TEST(pair_tests, ([&]()
+                               {
     not_std::pair<int, int> p1{1, 2};
     not_std::pair<int, int> p2{3, 4};
-    assert(p1 != p2);
-}
+    unit_test(p1 != p2, "Pair inequality operator"); }));
 
-void pair_test_less_than_operator()
-{
+    REGISTER_TEST(pair_tests, ([&]()
+                               {
     not_std::pair<int, int> p1{1, 4};
     not_std::pair<int, int> p2{1, 5};
     not_std::pair<int, int> p3{2, 2};
-    assert(p1 < p2);
-    assert(p1 < p3);
-}
-
-void test_pair()
-{
-    std::cout << "Testing not_std::pair: ";
-    pair_test_constructor_and_access();
-    pair_test_copy_constructor();
-    pair_test_assignment_operator();
-    pair_test_equality_operator();
-    pair_test_inequality_operator();
-    pair_test_less_than_operator();
-    std::cout << "\033[32m\u2713\033[0m" << std::endl;
+    unit_test(p1 < p2, "Pair less than operator: comparing second element");
+    unit_test(p1 < p3, "Pair less than operator: comparing first element"); }));
 }

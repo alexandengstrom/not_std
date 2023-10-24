@@ -1,121 +1,95 @@
-#include <iostream>
-#include <cassert>
 #include "../include/data_structures/priority_queue.hpp"
+#include "test_framework.hpp"
 
-void priority_queue_test_constructor()
+void register_priority_queue_tests()
 {
-    not_std::priority_queue<int> pq;
-    assert(pq.empty());
-    assert(pq.size() == 0);
-}
+    REGISTER_TEST(priority_queue_tests, []()
+                  {
+        not_std::priority_queue<int> pq;
+        unit_test(pq.empty(), "Constructor: queue should be empty");
+        unit_test(pq.size() == 0, "Constructor: queue size should be 0"); });
 
-void priority_queue_test_copy_constructor()
-{
-    not_std::priority_queue<int> pq;
-    pq.push(5);
-    pq.push(3);
-    pq.push(8);
-    not_std::priority_queue<int> copied_pq = pq;
+    REGISTER_TEST(priority_queue_tests, []()
+                  {
+        not_std::priority_queue<int> pq;
+        pq.push(5);
+        pq.push(3);
+        pq.push(8);
+        not_std::priority_queue<int> copied_pq = pq;
+        unit_test(copied_pq.top() == 8, "Copy Constructor: copied queue's top should be 8");
+        copied_pq.pop();
+        unit_test(copied_pq.top() == 5, "Copy Constructor: after pop, copied queue's top should be 5");
+        pq.pop();
+        unit_test(pq.top() == 5, "Copy Constructor: original queue's top after pop should be 5"); });
 
-    assert(copied_pq.top() == 8);
-    copied_pq.pop();
-    assert(copied_pq.top() == 5);
-    pq.pop();
-    assert(pq.top() == 5);
-}
+    REGISTER_TEST(priority_queue_tests, []()
+                  {
+        not_std::priority_queue<int> pq;
+        pq.push(5);
+        pq.push(3);
+        pq.push(8);
+        not_std::priority_queue<int> moved_pq(std::move(pq));
+        unit_test(moved_pq.top() == 8, "Move Constructor: moved queue's top should be 8");
+        moved_pq.pop();
+        unit_test(moved_pq.top() == 5, "Move Constructor: after pop, moved queue's top should be 5"); });
 
-void priority_queue_test_move_constructor()
-{
-    not_std::priority_queue<int> pq;
-    pq.push(5);
-    pq.push(3);
-    pq.push(8);
+    REGISTER_TEST(priority_queue_tests, []()
+                  {
+        not_std::priority_queue<int> pq;
+        pq.push(5);
+        pq.push(3);
+        pq.push(8);
+        not_std::priority_queue<int> another_pq;
+        another_pq = pq;
+        unit_test(another_pq.top() == 8, "Copy Assignment: another queue's top should be 8");
+        another_pq.pop();
+        unit_test(another_pq.top() == 5, "Copy Assignment: after pop, another queue's top should be 5");
+        pq.pop();
+        unit_test(pq.top() == 5, "Copy Assignment: original queue's top after pop should be 5"); });
 
-    not_std::priority_queue<int> moved_pq(std::move(pq));
+    REGISTER_TEST(priority_queue_tests, []()
+                  {
+        not_std::priority_queue<int> pq;
+        pq.push(5);
+        pq.push(3);
+        pq.push(8);
+        not_std::priority_queue<int> another_pq;
+        another_pq = std::move(pq);
+        unit_test(another_pq.top() == 8, "Move Assignment: another queue's top should be 8");
+        another_pq.pop();
+        unit_test(another_pq.top() == 5, "Move Assignment: after pop, another queue's top should be 5"); });
 
-    assert(moved_pq.top() == 8);
-    moved_pq.pop();
-    assert(moved_pq.top() == 5);
-}
+    REGISTER_TEST(priority_queue_tests, []()
+                  {
+        not_std::priority_queue<int> pq;
+        pq.push(5);
+        unit_test(pq.top() == 5, "Push and Top: after first push, top should be 5");
+        pq.push(3);
+        unit_test(pq.top() == 5, "Push and Top: after second push, top should be 5");
+        pq.push(8);
+        unit_test(pq.top() == 8, "Push and Top: after third push, top should be 8");
+        pq.push(1);
+        unit_test(pq.top() == 8, "Push and Top: after fourth push, top should be 8"); });
 
-void priority_queue_test_copy_assignment()
-{
-    not_std::priority_queue<int> pq;
-    pq.push(5);
-    pq.push(3);
-    pq.push(8);
-    not_std::priority_queue<int> another_pq;
-    another_pq = pq;
+    REGISTER_TEST(priority_queue_tests, []()
+                  {
+        not_std::priority_queue<int> pq;
+        pq.push(5);
+        pq.push(3);
+        pq.push(8);
+        pq.push(1);
+        pq.pop();
+        unit_test(pq.top() == 5, "Pop: after first pop, top should be 5");
+        pq.pop();
+        unit_test(pq.top() == 3, "Pop: after second pop, top should be 3"); });
 
-    assert(another_pq.top() == 8);
-    another_pq.pop();
-    assert(another_pq.top() == 5);
-    pq.pop();
-    assert(pq.top() == 5);
-}
-
-void priority_queue_test_move_assignment()
-{
-    not_std::priority_queue<int> pq;
-    pq.push(5);
-    pq.push(3);
-    pq.push(8);
-    not_std::priority_queue<int> another_pq;
-    another_pq = std::move(pq);
-
-    assert(another_pq.top() == 8);
-    another_pq.pop();
-    assert(another_pq.top() == 5);
-}
-
-void priority_queue_test_push_and_top()
-{
-    not_std::priority_queue<int> pq;
-    pq.push(5);
-    assert(pq.top() == 5);
-    pq.push(3);
-    assert(pq.top() == 5);
-    pq.push(8);
-    assert(pq.top() == 8);
-    pq.push(1);
-    assert(pq.top() == 8);
-}
-
-void priority_queue_test_pop()
-{
-    not_std::priority_queue<int> pq;
-    pq.push(5);
-    pq.push(3);
-    pq.push(8);
-    pq.push(1);
-    pq.pop();
-    assert(pq.top() == 5);
-    pq.pop();
-    assert(pq.top() == 3);
-}
-
-void priority_queue_test_clear()
-{
-    not_std::priority_queue<int> pq;
-    pq.push(5);
-    pq.push(3);
-    pq.push(8);
-    pq.clear();
-    assert(pq.empty());
-    assert(pq.size() == 0);
-}
-
-void test_priority_queue()
-{
-    std::cout << "Testing not_std::priority_queue: ";
-    priority_queue_test_constructor();
-    priority_queue_test_copy_constructor();
-    priority_queue_test_move_constructor();
-    priority_queue_test_copy_assignment();
-    priority_queue_test_move_assignment();
-    priority_queue_test_push_and_top();
-    priority_queue_test_pop();
-    priority_queue_test_clear();
-
-    std::cout << "\033[32m\u2713\033[0m" << std::endl;
+    REGISTER_TEST(priority_queue_tests, []()
+                  {
+        not_std::priority_queue<int> pq;
+        pq.push(5);
+        pq.push(3);
+        pq.push(8);
+        pq.clear();
+        unit_test(pq.empty(), "Clear: queue should be empty after clear");
+        unit_test(pq.size() == 0, "Clear: queue size should be 0 after clear"); });
 }

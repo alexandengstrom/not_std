@@ -203,7 +203,7 @@ void not_std::string::push_back(char c)
     data[current_size] = '\0';
 }
 
-std::ostream &operator<<(std::ostream &out, const not_std::string &str)
+inline std::ostream &operator<<(std::ostream &out, const not_std::string &str)
 {
     for (not_std::lu_int i = 0; i < str.length(); ++i)
     {

@@ -1,132 +1,108 @@
 #include "../include/data_structures/vector.hpp"
-#include <iostream>
-#include <cassert>
+// #include "../include/data_structures/string.hpp"
+#include "test_framework.hpp"
 
-void vector_test_push_back_and_access()
+void register_vector_tests()
 {
-    not_std::vector<int> vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<int> vec;
+        vec.push_back(1);
+        vec.push_back(2);
+        vec.push_back(3);
+        unit_test(vec[0] == 1, "push_back_and_access: first element should be 1");
+        unit_test(vec[1] == 2, "push_back_and_access: second element should be 2");
+        unit_test(vec[2] == 3, "push_back_and_access: third element should be 3"); });
 
-    assert(vec[0] == 1);
-    assert(vec[1] == 2);
-    assert(vec[2] == 3);
-}
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<int> vec;
+        unit_test(vec.size() == 0, "size: vector size should be 0 initially");
+        vec.push_back(42);
+        unit_test(vec.size() == 1, "size: vector size should be 1 after push_back"); });
 
-void vector_test_size()
-{
-    not_std::vector<int> vec;
-    assert(vec.size() == 0);
-    vec.push_back(42);
-    assert(vec.size() == 1);
-}
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<int> vec;
+        unit_test(vec.empty(), "empty: vector should be empty initially");
+        vec.push_back(42);
+        unit_test(!vec.empty(), "empty: vector should not be empty after push_back"); });
 
-void vector_test_empty()
-{
-    not_std::vector<int> vec;
-    assert(vec.empty());
-    vec.push_back(42);
-    assert(!vec.empty());
-}
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<int> vec;
+        vec.push_back(1);
+        vec.push_back(2);
+        vec.push_back(3);
 
-void vector_test_iterator()
-{
-    not_std::vector<int> vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
+        int sum = 0;
+        for (auto it = vec.begin(); it != vec.end(); ++it)
+        {
+            sum += *it;
+        }
+        unit_test(sum == 6, "iterator: sum of elements using iterator should be 6"); });
 
-    int sum = 0;
-    for (auto it = vec.begin(); it != vec.end(); ++it)
-    {
-        sum += *it;
-    }
-    assert(sum == 6);
-}
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<int> vec;
+        vec.push_back(1);
+        vec.push_back(2);
+        vec.push_back(3);
 
-void vector_test_reverse_iterator()
-{
-    not_std::vector<int> vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
+        int product = 1;
+        for (auto it = vec.rbegin(); it != vec.rend(); ++it)
+        {
+            product *= *it;
+        }
+        unit_test(product == 6, "reverse_iterator: product of elements using reverse iterator should be 6"); });
 
-    int product = 1;
-    for (auto it = vec.rbegin(); it != vec.rend(); ++it)
-    {
-        product *= *it;
-    }
-    assert(product == 6);
-}
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<int> vec;
+        vec.push_back(1);
+        vec.push_back(2);
+        vec.push_back(3);
+        vec.clear();
+        unit_test(vec.empty(), "clear: vector should be empty after clear");
+        unit_test(vec.size() == 0, "clear: vector size should be 0 after clear"); });
 
-void vector_test_clear()
-{
-    not_std::vector<int> vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
-    vec.clear();
-    assert(vec.empty());
-    assert(vec.size() == 0);
-}
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<int> vec;
+        for (int i{0}; i < 1e6; i++)
+        {
+            vec.push_back(i);
+        }
+        unit_test(vec.size() == 1e6, "push_back_large_data: vector size should be 1e6 after adding 1e6 elements");
+        unit_test(vec[999999] == 999999, "push_back_large_data: last element should be 999999"); });
 
-void vector_test_push_back_large_data()
-{
-    not_std::vector<int> vec;
-    for (int i{0}; i < 1e6; i++)
-    {
-        vec.push_back(i);
-    }
-    assert(vec.size() == 1e6);
-    assert(vec[999999] == 999999);
-}
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<int> vec;
+        vec.reserve(2);
+        auto initial_data_ptr = &vec[0];
 
-void vector_test_reallocation()
-{
-    not_std::vector<int> vec;
-    vec.reserve(2);
-    auto initial_data_ptr = &vec[0];
+        vec.push_back(1);
+        vec.push_back(2);
+        unit_test(&vec[0] == initial_data_ptr, "reallocation: data should not be reallocated after two push_backs");
 
-    vec.push_back(1);
-    vec.push_back(2);
-    assert(&vec[0] == initial_data_ptr);
+        vec.push_back(3);
+        unit_test(&vec[0] != initial_data_ptr, "reallocation: data should be reallocated after third push_back"); });
 
-    vec.push_back(3);
-    assert(&vec[0] != initial_data_ptr);
-}
+    // REGISTER_TEST(vector_tests, []()
+    //               {
+    //     not_std::vector<not_std::string> vec;
+    //     vec.push_back("Hello");
+    //     vec.push_back("World");
+    //     unit_test(vec[0] == "Hello", "push_back_strings: first string should be 'Hello'");
+    //     unit_test(vec[1] == "World", "push_back_strings: second string should be 'World'"); });
 
-void vector_test_push_back_strings()
-{
-    not_std::vector<std::string> vec;
-    vec.push_back("Hello");
-    vec.push_back("World");
-    assert(vec[0] == "Hello");
-    assert(vec[1] == "World");
-}
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<not_std::vector<int>> vec2d;
+        not_std::vector<int> inner_vec;
+        inner_vec.push_back(42);
 
-void vector_test_push_back_vector()
-{
-    not_std::vector<not_std::vector<int>> vec2d;
-    not_std::vector<int> inner_vec;
-    inner_vec.push_back(42);
-
-    vec2d.push_back(inner_vec);
-    assert(vec2d[0][0] == 42);
-}
-
-void test_vector()
-{
-    std::cout << "Testing not_std::vector: ";
-    vector_test_push_back_and_access();
-    vector_test_size();
-    vector_test_empty();
-    vector_test_iterator();
-    vector_test_reverse_iterator();
-    vector_test_clear();
-    vector_test_push_back_large_data();
-    vector_test_reallocation();
-    vector_test_push_back_strings();
-    vector_test_push_back_vector();
-    std::cout << "\033[32m\u2713\033[0m" << std::endl;
+        vec2d.push_back(inner_vec);
+        unit_test(vec2d[0][0] == 42, "push_back_vector: inner vector's first element should be 42"); });
 }

@@ -1,19 +1,21 @@
-#include "test_string.cpp"
-#include "test_unordered_map.cpp"
-#include "test_vector.cpp"
-#include "test_pair.cpp"
-#include "test_priority_queue.cpp"
-
-#include <iostream>
+#include "test_framework.hpp"
 
 int main()
 {
-    test_string();
-    test_pair();
-    test_unordered_map();
-    test_vector();
-    test_priority_queue();
+    register_string_tests();
+    run_tests(string_tests, "not_std::string");
 
-    std::cout << "All tests passed!" << std::endl;
+    register_pair_tests();
+    run_tests(pair_tests, "not_std::pair");
+
+    register_priority_queue_tests();
+    run_tests(priority_queue_tests, "not_std::priority_queue");
+
+    register_vector_tests();
+    run_tests(vector_tests, "not_std::vector");
+
+    register_unordered_map_tests();
+    run_tests(unordered_map_tests, "not_std::unordered_map");
+
     return 0;
 }
