@@ -12,10 +12,10 @@ After completing the initial implementations, the next objective will be to impr
 A dynamic array that automatically manages its size. It reallocates memory when elements are added or removed, ensuring efficient use of memory.
 
 **unordered_map:**
-A hash table implementation, which provides ![O(n)](https://latex.codecogs.com/svg.image?O(1)) average-time complexity for lookups. It utilizes linear indexing to handle hash collisions.
+A hash table implementation, which provides O(1) average-time complexity for lookups. It utilizes linear indexing to handle hash collisions.
 
 **pair:**
-A simple container comprising two elements, commonly used in data structures to store two related pieces of data.
+A simple container comprising two elements, commonly used in data structures to store two related pieces of data. Is also used inside unordered_map.
 
 **string:**
 A dynamic character array with null-termination. Provides several utility functions for string manipulations.
