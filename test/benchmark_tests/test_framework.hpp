@@ -27,5 +27,7 @@ void register_unordered_map_test();
 void register_list_test();
 void register_priority_queue_test();
 void register_string_test();
+void register_set_test();
+void register_bitset_test();
 
 #endif

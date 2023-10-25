@@ -20,5 +20,11 @@ int main()
     register_list_tests();
     run_tests(list_tests, "not_std::list");
 
+    register_set_tests();
+    run_tests(set_tests, "not_std::set");
+
+    register_bitset_tests();
+    run_tests(bitset_tests, "not_std::bitset");
+
     return 0;
 }

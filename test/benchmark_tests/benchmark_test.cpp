@@ -7,5 +7,7 @@ int main()
     register_list_test();
     register_priority_queue_test();
     register_string_test();
+    register_set_test();
+    register_bitset_test();
     return 0;
 }

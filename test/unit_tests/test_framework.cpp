@@ -8,6 +8,8 @@ std::vector<std::function<void()>> priority_queue_tests;
 std::vector<std::function<void()>> vector_tests;
 std::vector<std::function<void()>> unordered_map_tests;
 std::vector<std::function<void()>> list_tests;
+std::vector<std::function<void()>> set_tests;
+std::vector<std::function<void()>> bitset_tests;
 
 void unit_test(bool condition, const std::string &test_name, const std::string &fail_reason)
 {

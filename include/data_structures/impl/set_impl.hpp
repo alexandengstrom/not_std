@@ -1,5 +1,5 @@
 template <typename T>
-not_std::set<T>::set() : root(nullptr) {}
+not_std::set<T>::set() : root{nullptr}, current_size{0} {}
 
 template <typename T>
 not_std::set<T>::~set()
@@ -10,6 +10,8 @@ not_std::set<T>::~set()
 template <typename T>
 void not_std::set<T>::insert(const T &value)
 {
+    current_size++;
+
     if (!root)
     {
         root = create_node(value, BLACK);
@@ -22,11 +24,18 @@ void not_std::set<T>::insert(const T &value)
     {
         parent = current;
         if (value < current->value)
+        {
             current = current->left;
+        }
         else if (value > current->value)
+        {
             current = current->right;
+        }
         else
+        {
+            current_size--;
             return;
+        }
     }
 
     Node *new_node{create_node(value, RED, parent)};
@@ -52,6 +61,18 @@ template <typename T>
 bool not_std::set<T>::contains(const T &value)
 {
     return search(value) != nullptr;
+}
+
+template <typename T>
+bool not_std::set<T>::empty() const
+{
+    return root == nullptr;
+}
+
+template <typename T>
+not_std::u_int not_std::set<T>::size() const
+{
+    return current_size;
 }
 
 template <typename T>
@@ -198,7 +219,11 @@ typename not_std::set<T>::Node *not_std::set<T>::remove_node(const T &value)
 {
     Node *node{search(value)};
     if (!node)
+    {
         return nullptr;
+    }
+
+    current_size--;
 
     Node *x, *y;
 
@@ -395,6 +420,68 @@ template <typename T>
 typename not_std::set<T>::iterator not_std::set<T>::end()
 {
     return iterator();
+}
+
+template <typename T>
+not_std::set<T>::reverse_iterator::reverse_iterator(Node *start) : ptr{start} {}
+
+template <typename T>
+not_std::set<T>::reverse_iterator::reverse_iterator() : ptr{nullptr} {}
+
+template <typename T>
+T &not_std::set<T>::reverse_iterator::operator*()
+{
+    return ptr->value;
+}
+
+template <typename T>
+typename not_std::set<T>::reverse_iterator &not_std::set<T>::reverse_iterator::operator++()
+{
+    if (ptr)
+    {
+        if (ptr->left)
+        {
+            ptr = ptr->left;
+            while (ptr->right)
+            {
+                ptr = ptr->right;
+            }
+        }
+        else
+        {
+            Node *tmp{ptr->parent};
+            while (tmp && ptr == tmp->left)
+            {
+                ptr = tmp;
+                tmp = tmp->parent;
+            }
+            ptr = tmp;
+        }
+    }
+    return *this;
+}
+
+template <typename T>
+bool not_std::set<T>::reverse_iterator::operator!=(const not_std::set<T>::reverse_iterator &other)
+{
+    return ptr != other.ptr;
+}
+
+template <typename T>
+typename not_std::set<T>::reverse_iterator not_std::set<T>::rbegin()
+{
+    Node *node = root;
+    while (node && node->right)
+    {
+        node = node->right;
+    }
+    return reverse_iterator(node);
+}
+
+template <typename T>
+typename not_std::set<T>::reverse_iterator not_std::set<T>::rend()
+{
+    return reverse_iterator();
 }
 
 template <typename T>

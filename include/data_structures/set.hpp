@@ -2,6 +2,7 @@
 #define NOT_STD_SET_HPP
 
 #include <string>
+#include "../common/common_defs.hpp"
 
 namespace not_std
 {
@@ -15,6 +16,8 @@ namespace not_std
         void insert(const T &value);
         void erase(const T &value);
         bool contains(const T &value);
+        bool empty() const;
+        u_int size() const;
 
     private:
         enum Color
@@ -39,6 +42,7 @@ namespace not_std
         };
 
         Node *root;
+        u_int current_size;
 
         Node *search(const T &value);
         void fix_violations(Node *inserted);
@@ -65,6 +69,22 @@ namespace not_std
 
         iterator begin();
         iterator end();
+
+        class reverse_iterator
+        {
+        public:
+            reverse_iterator(Node *start);
+            reverse_iterator();
+            T &operator*();
+            reverse_iterator &operator++();
+            bool operator!=(const reverse_iterator &other);
+
+        private:
+            Node *ptr;
+        };
+
+        reverse_iterator rbegin();
+        reverse_iterator rend();
 
         // ONLY WHILE BUILDING THE CLASS TO SEE THAT IT WORKS:
         std::string print_tree() const;
