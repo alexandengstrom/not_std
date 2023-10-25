@@ -40,6 +40,16 @@ A class that represents a fixed-size sequence of N bits. Bitsets can be manipula
 
 For each data structure, I've added unit tests in the **test/unit_test** directory. Whenever I introduce new functionality, I make it a point to update these tests to ensure everything's working as expected.
 
+To compile the tests, use the build file:
+```bash
+test/unit_test/build_tests.sh
+```
+
+After compiling, you can run the tests with:
+```bash
+./test_runner
+```
+
 #### Benchmark Tests:
 
 Beyond just correctness, performance is a critical aspect of data structures. Benchmark tests have been set up to compare the performance of not_std data structures against their standard library counterparts. This serves as an empirical measure of the efficiency of the custom implementations.
