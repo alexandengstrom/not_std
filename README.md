@@ -2,11 +2,13 @@
 
 ### Reinventing the standard library
 
-This project was initiated to learn more about data structures by implementing them from scratch. Building them independently also provides flexibility for modifications based on specific requirements.
+This project was initiated to explore data structures by implementing them firsthand. Building these structures from scratch allows for tailored modifications as situations demand.
 
-After completing the initial implementations, the next objective will be to improve performance. The aim is to make the not_std containers faster than the std counterparts, even if it requires sacrificing some safety measures.
+After laying down the foundational implementations, the subsequent focus will be on boosting performance. The driving aim is to elevate the not_std containers to outpace their std counterparts in speed. The choice to prioritize speed over safety stems from the desire to utilize these containers in contexts like programming competitions, where performance is paramount and safety can be secondary.
 
-### Data structures:
+Alongside the primary data structures, iterators will be developed to further refine functionality and user experience.
+
+### Data sructures:
 
 **vector:**
 A dynamic array that automatically manages its size. It reallocates memory when elements are added or removed, ensuring efficient use of memory.
