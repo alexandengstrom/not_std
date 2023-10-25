@@ -23,6 +23,7 @@ extern std::vector<std::function<void()>> pair_tests;
 extern std::vector<std::function<void()>> priority_queue_tests;
 extern std::vector<std::function<void()>> vector_tests;
 extern std::vector<std::function<void()>> unordered_map_tests;
+extern std::vector<std::function<void()>> list_tests;
 
 #define REGISTER_TEST(group, test) group.push_back(test)
 
@@ -31,5 +32,6 @@ void register_pair_tests();
 void register_priority_queue_tests();
 void register_vector_tests();
 void register_unordered_map_tests();
+void register_list_tests();
 
 #endif

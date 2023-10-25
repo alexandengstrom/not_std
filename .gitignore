@@ -1,4 +1,6 @@
 test.cpp
-test/test_runner
+test/unit_test/test_runner
+test/benchmark_tests/a.out
+test/benchmark_tests/test_runner
 a.out
 .vscode

@@ -1,5 +1,3 @@
-
-
 not_std::string::string() : data{nullptr}, current_size{0}, capacity{0} {}
 
 not_std::string::string(const char *cstr) : data(nullptr), current_size(0), capacity(0)
@@ -113,7 +111,7 @@ bool not_std::string::operator==(const char *cstr) const
         s2++;
     }
 
-    return *s1 == *s2;
+    return true;
 }
 
 bool not_std::string::operator!=(const not_std::string &other) const
@@ -171,6 +169,27 @@ not_std::string &not_std::string::operator+=(const char *other)
     data[current_size] = '\0';
 
     return *this;
+}
+
+not_std::string not_std::string::operator+(const not_std::string &rhs)
+{
+    not_std::string result = *this;
+    result += rhs;
+    return result;
+}
+
+not_std::string not_std::string::operator+(const char *rhs)
+{
+    not_std::string result = *this;
+    result += rhs;
+    return result;
+}
+
+not_std::string not_std::string::operator+(const std::string &rhs)
+{
+    not_std::string result = *this;
+    result += rhs.c_str();
+    return result;
 }
 
 not_std::lu_int not_std::string::length() const noexcept

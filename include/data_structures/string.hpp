@@ -3,6 +3,7 @@
 
 #include "../common/common_defs.hpp"
 #include <iostream>
+#include <string>
 
 namespace not_std
 {
@@ -28,6 +29,9 @@ namespace not_std
         inline bool operator!=(const char *cstr) const;
         inline string &operator+=(const string &other);
         inline string &operator+=(const char *other);
+        inline string operator+(const not_std::string &rhs);
+        inline string operator+(const char *rhs);
+        inline string operator+(const std::string &rhs);
 
         inline lu_int length() const noexcept;
         inline bool empty() const noexcept;

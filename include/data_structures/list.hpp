@@ -10,7 +10,12 @@ namespace not_std
     {
     public:
         list();
+        list(const list<T> &other);
+        list(list<T> &&other) noexcept;
         ~list();
+
+        list<T> &operator=(const not_std::list<T> &other);
+        list<T> &operator=(not_std::list<T> &&other) noexcept;
 
         T &front();
         T &back();
@@ -28,7 +33,7 @@ namespace not_std
         {
         public:
             Node();
-            Node(T &value);
+            Node(const T &value);
             Node(T &&value);
             ~Node();
             Node *next;
@@ -39,6 +44,41 @@ namespace not_std
         Node *head;
         Node *tail;
         u_int current_size;
+
+    public:
+        class iterator
+        {
+        public:
+            iterator(Node *node);
+
+            T &operator*();
+            iterator &operator++();
+
+            bool operator!=(const iterator &other) const;
+
+        private:
+            Node *current_node;
+        };
+
+        iterator begin();
+        iterator end();
+
+        class reverse_iterator
+        {
+        public:
+            reverse_iterator(Node *node);
+
+            T &operator*();
+            reverse_iterator &operator++();
+
+            bool operator!=(const reverse_iterator &other) const;
+
+        private:
+            Node *current_node;
+        };
+
+        reverse_iterator rbegin();
+        reverse_iterator rend();
     };
 
 #include "impl/list_impl.hpp"

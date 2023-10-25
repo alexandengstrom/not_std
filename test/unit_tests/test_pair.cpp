@@ -1,4 +1,4 @@
-#include "../include/data_structures/pair.hpp"
+#include "../../include/data_structures/pair.hpp"
 #include "test_framework.hpp"
 
 void register_pair_tests()

@@ -1,4 +1,4 @@
-#include "../include/data_structures/unordered_map.hpp"
+#include "../../include/data_structures/unordered_map.hpp"
 #include "test_framework.hpp"
 
 void register_unordered_map_tests()
@@ -73,4 +73,23 @@ void register_unordered_map_tests()
         }
 
         unit_test(count == 10, "iteration: Iteration count should be 10"); }));
+
+    REGISTER_TEST(unordered_map_tests, ([&]()
+                                        {
+        not_std::unordered_map<not_std::string, int> umap;
+        for (int i = 0; i < 100; ++i)
+        {
+            umap.insert(not_std::string("key") + std::to_string(i), i);
+        }
+
+        for (int i = 0; i < 100 / 2; ++i)
+        {
+            int v = umap[not_std::string("key") + std::to_string(i)];
+            unit_test(v == i, "access data: Value should be correct");
+        }
+
+        for (auto it{umap.begin()}; it != umap.end(); ++it)
+        {
+            auto [k, v] = *it;
+        } }));
 }

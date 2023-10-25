@@ -66,17 +66,17 @@ void not_std::unordered_map<K, V>::insert(const K &key, const V &value)
     {
         if (data[index].state == SlotState::EMPTY || data[index].state == SlotState::TOMBSTONED)
         {
-            data[index].key = key;
-            data[index].value = value;
+            data[index].pair.first = key;
+            data[index].pair.second = value;
             data[index].state = SlotState::OCCUPIED;
             current_size++;
 
             return;
         }
 
-        else if (data[index].state == SlotState::OCCUPIED && data[index].key == key)
+        else if (data[index].state == SlotState::OCCUPIED && data[index].pair.first == key)
         {
-            data[index].value = value;
+            data[index].pair.second = value;
             return;
         }
 
@@ -91,7 +91,7 @@ not_std::lu_int not_std::unordered_map<K, V>::erase(const K &key)
 
     while (data[index].state != SlotState::EMPTY)
     {
-        if (data[index].state == SlotState::OCCUPIED && data[index].key == key)
+        if (data[index].state == SlotState::OCCUPIED && data[index].pair.first == key)
         {
             data[index].state = SlotState::TOMBSTONED;
             --current_size;
@@ -116,16 +116,16 @@ V &not_std::unordered_map<K, V>::operator[](const K &key)
 
     while (true)
     {
-        if (data[index].state == SlotState::OCCUPIED && data[index].key == key)
+        if (data[index].state == SlotState::OCCUPIED && data[index].pair.first == key)
         {
-            return data[index].value;
+            return data[index].pair.second;
         }
         else if (data[index].state == SlotState::EMPTY)
         {
-            data[index].key = key;
+            data[index].pair.first = key;
             data[index].state = SlotState::OCCUPIED;
             current_size++;
-            return data[index].value;
+            return data[index].pair.second;
         }
 
         index = (index + 1) % capacity;
@@ -140,9 +140,9 @@ const V &not_std::unordered_map<K, V>::operator[](const K &key) const
 
     while (true)
     {
-        if (data[index].state == SlotState::OCCUPIED && data[index].key == key)
+        if (data[index].state == SlotState::OCCUPIED && data[index].pair.first == key)
         {
-            return data[index].value;
+            return data[index].pair.second;
         }
 
         index = (index + 1) % capacity;
@@ -208,7 +208,7 @@ void not_std::unordered_map<K, V>::rehash()
     {
         if (old_data[i].state == SlotState::OCCUPIED)
         {
-            insert(old_data[i].key, old_data[i].value);
+            insert(old_data[i].pair.first, old_data[i].pair.second);
         }
     }
 
@@ -218,25 +218,18 @@ void not_std::unordered_map<K, V>::rehash()
 }
 
 template <typename K, typename V>
-not_std::unordered_map<K, V>::iterator::iterator(KeyValuePair *ptr, u_int capacity)
-    : ptr(ptr), capacity(capacity) {}
+not_std::unordered_map<K, V>::iterator::iterator(KeyValuePair *ptr, KeyValuePair *map_end) : ptr(ptr), map_end(map_end) {}
 
 template <typename K, typename V>
 typename not_std::unordered_map<K, V>::iterator &not_std::unordered_map<K, V>::iterator::operator++()
 {
-    ++ptr;
-    --capacity;
-
-    if (!capacity)
-    {
+    if (ptr >= map_end)
         return *this;
-    }
 
-    while (ptr->state != SlotState::OCCUPIED)
+    do
     {
         ++ptr;
-        --capacity;
-    }
+    } while (ptr < map_end && ptr->state != SlotState::OCCUPIED);
 
     return *this;
 }
@@ -244,9 +237,7 @@ typename not_std::unordered_map<K, V>::iterator &not_std::unordered_map<K, V>::i
 template <typename K, typename V>
 not_std::pair<K, V> &not_std::unordered_map<K, V>::iterator::operator*() const
 {
-    static not_std::pair<K, V> result;
-    result.first = ptr->key;
-    result.second = ptr->value;
+    not_std::pair<K, V> &result{ptr->pair};
     return result;
 }
 
@@ -263,13 +254,14 @@ typename not_std::unordered_map<K, V>::iterator not_std::unordered_map<K, V>::be
     {
         if (data[i].state == SlotState::OCCUPIED)
         {
-            return iterator(&data[i], capacity);
+            return iterator(&data[i], &data[capacity]);
         }
     }
     return end();
 }
+
 template <typename K, typename V>
 typename not_std::unordered_map<K, V>::iterator not_std::unordered_map<K, V>::end()
 {
-    return iterator(&data[capacity]);
+    return iterator(&data[capacity], &data[capacity]);
 }

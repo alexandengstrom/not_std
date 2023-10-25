@@ -1,5 +1,5 @@
-#include "../include/data_structures/vector.hpp"
-// #include "../include/data_structures/string.hpp"
+#include "../../include/data_structures/vector.hpp"
+#include "../../include/data_structures/string.hpp"
 #include "test_framework.hpp"
 
 void register_vector_tests()
@@ -89,13 +89,13 @@ void register_vector_tests()
         vec.push_back(3);
         unit_test(&vec[0] != initial_data_ptr, "reallocation: data should be reallocated after third push_back"); });
 
-    // REGISTER_TEST(vector_tests, []()
-    //               {
-    //     not_std::vector<not_std::string> vec;
-    //     vec.push_back("Hello");
-    //     vec.push_back("World");
-    //     unit_test(vec[0] == "Hello", "push_back_strings: first string should be 'Hello'");
-    //     unit_test(vec[1] == "World", "push_back_strings: second string should be 'World'"); });
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<not_std::string> vec;
+        vec.push_back("Hello");
+        vec.push_back("World");
+        unit_test(vec[0] == "Hello", "push_back_strings: first string should be 'Hello'");
+        unit_test(vec[1] == "World", "push_back_strings: second string should be 'World'"); });
 
     REGISTER_TEST(vector_tests, []()
                   {
@@ -105,4 +105,16 @@ void register_vector_tests()
 
         vec2d.push_back(inner_vec);
         unit_test(vec2d[0][0] == 42, "push_back_vector: inner vector's first element should be 42"); });
+
+    REGISTER_TEST(vector_tests, []()
+                  {
+        not_std::vector<int> vec;
+        for (int i{0}; i < 200; i++)
+        {
+            vec.push_back(i);
+        }
+
+        for (int i{199}; i >= 0; i--) {
+            unit_test(vec[i] == i, "push_back_data: make sure every element is correct");
+        } });
 }

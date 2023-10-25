@@ -1,4 +1,4 @@
-#include "../include/data_structures/priority_queue.hpp"
+#include "../../include/data_structures/priority_queue.hpp"
 #include "test_framework.hpp"
 
 void register_priority_queue_tests()
@@ -92,4 +92,28 @@ void register_priority_queue_tests()
         pq.clear();
         unit_test(pq.empty(), "Clear: queue should be empty after clear");
         unit_test(pq.size() == 0, "Clear: queue size should be 0 after clear"); });
+
+    REGISTER_TEST(priority_queue_tests, []()
+                  {
+        not_std::priority_queue<int> pq;
+        const int NUM_VALUES = 100000;
+        for (int i = 0; i < NUM_VALUES; ++i)
+        {
+            pq.push(i);
+        }
+
+        pq.push(NUM_VALUES * 10);
+        unit_test(pq.top() == NUM_VALUES * 10, "Stress Test: top value should be 1 million after insertions");
+        pq.pop();
+
+        int expected_value = NUM_VALUES - 1;
+        while (!pq.empty())
+        {
+            unit_test(pq.top() == expected_value, "Stress Test: incorrect value during sequential pop");
+            if (pq.top() != expected_value) {
+                break;
+            }
+            pq.pop();
+            --expected_value;
+        } });
 }

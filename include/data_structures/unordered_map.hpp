@@ -39,8 +39,7 @@ namespace not_std
 
         struct KeyValuePair
         {
-            K key;
-            V value;
+            not_std::pair<K, V> pair;
             SlotState state{SlotState::EMPTY};
         };
 
@@ -57,7 +56,7 @@ namespace not_std
         class iterator
         {
         public:
-            iterator(KeyValuePair *ptr = nullptr, u_int capacity = 0);
+            iterator(KeyValuePair *ptr, KeyValuePair *map_end);
 
             iterator &operator++();
             not_std::pair<K, V> &operator*() const;
@@ -65,7 +64,7 @@ namespace not_std
 
         private:
             KeyValuePair *ptr;
-            u_int capacity;
+            KeyValuePair *map_end;
         };
 
         iterator begin();

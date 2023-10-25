@@ -17,5 +17,8 @@ int main()
     register_unordered_map_tests();
     run_tests(unordered_map_tests, "not_std::unordered_map");
 
+    register_list_tests();
+    run_tests(list_tests, "not_std::list");
+
     return 0;
 }
