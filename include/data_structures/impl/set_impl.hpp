@@ -4,7 +4,7 @@ not_std::set<T>::set() : root{nullptr}, current_size{0} {}
 template <typename T>
 not_std::set<T>::~set()
 {
-    // TODO
+    delete_tree(root);
 }
 
 template <typename T>
@@ -358,6 +358,21 @@ template <typename T>
 bool not_std::set<T>::Node::is_on_left()
 {
     return parent && this == parent->left;
+}
+
+template <typename T>
+void not_std::set<T>::delete_tree(Node *node)
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    delete_tree(node->left);
+
+    delete_tree(node->right);
+
+    delete node;
 }
 
 template <typename T>

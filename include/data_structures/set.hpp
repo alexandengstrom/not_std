@@ -52,6 +52,7 @@ namespace not_std
         Node *search(const T &value) const;
         Node *create_node(const T &value, Color color, Node *parent = nullptr, Node *left = nullptr, Node *right = nullptr);
         Node *remove_node(const T &value);
+        void delete_tree(Node *node);
 
     public:
         class iterator

@@ -87,6 +87,7 @@ not_std::list<T> &not_std::list<T>::operator=(not_std::list<T> &&other) noexcept
     if (this != &other)
     {
         delete head;
+        delete tail;
 
         head = other.head;
         tail = other.tail;
