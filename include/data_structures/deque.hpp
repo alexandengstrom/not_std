@@ -25,7 +25,7 @@ namespace not_std
         void pop_back();
 
         u_int size() const;
-        u_int empty() const;
+        bool empty() const;
 
     private:
         static const u_int BLOCK_SIZE = 16;

@@ -25,6 +25,7 @@ not_std::deque<T>::~deque()
     for (u_int i{0}; i < block_count; ++i)
     {
         delete[] data[i];
+        data[i] = nullptr;
     }
     delete[] data;
 }
@@ -67,18 +68,18 @@ void not_std::deque<T>::push_front(const T &value)
 template <typename T>
 void not_std::deque<T>::push_back(const T &value)
 {
-    back_block[back_index] = value;
-    ++current_size;
-
     if (back_index == BLOCK_SIZE - 1)
     {
         allocate_back();
+        back_block[back_index] = value;
         back_index = 0;
     }
     else
     {
+        back_block[back_index] = value;
         ++back_index;
     }
+    ++current_size;
 }
 
 template <typename T>
@@ -115,7 +116,7 @@ u_int not_std::deque<T>::size() const
 }
 
 template <typename T>
-u_int not_std::deque<T>::empty() const
+bool not_std::deque<T>::empty() const
 {
     return current_size == 0;
 }
@@ -130,11 +131,22 @@ void not_std::deque<T>::allocate_front()
         {
             new_data[i + 1] = data[i];
         }
+
+        for (u_int i{block_count + 1}; i < max_blocks + BLOCK_SIZE; ++i)
+        {
+            new_data[i] = nullptr;
+        }
+
         delete[] data;
         data = new_data;
-
         max_blocks += BLOCK_SIZE;
     }
+
+    // if (data[0])
+    // {
+    //     delete[] data[0];
+    //     data[0] = nullptr;
+    // }
 
     data[0] = new T[BLOCK_SIZE];
     ++block_count;
@@ -151,17 +163,25 @@ void not_std::deque<T>::allocate_back()
         {
             new_data[i] = data[i];
         }
-        new_data[block_count - 1] = data[block_count - 1];
+        for (u_int i{block_count}; i < max_blocks + BLOCK_SIZE; ++i)
+        {
+            new_data[i] = nullptr;
+        }
 
         delete[] data;
         data = new_data;
-
         max_blocks += BLOCK_SIZE;
     }
 
+    if (data[block_count])
+    {
+        delete[] data[block_count];
+        data[block_count] = nullptr;
+    }
+
     data[block_count] = new T[BLOCK_SIZE];
-    back_block = data[block_count];
     ++block_count;
+    back_block = data[block_count - 1];
 }
 
 template <typename T>
@@ -176,15 +196,8 @@ void not_std::deque<T>::deallocate_front()
 
     data[block_count - 1] = nullptr;
     --block_count;
-    if (block_count == 0)
-    {
-        front_block = nullptr;
-        back_block = nullptr;
-    }
-    else
-    {
-        front_block = data[0];
-    }
+    front_block = (block_count == 0) ? nullptr : data[0];
+    back_block = data[block_count - 1];
 }
 
 template <typename T>
