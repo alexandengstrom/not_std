@@ -26,6 +26,7 @@ extern std::vector<std::function<void()>> unordered_map_tests;
 extern std::vector<std::function<void()>> list_tests;
 extern std::vector<std::function<void()>> set_tests;
 extern std::vector<std::function<void()>> bitset_tests;
+extern std::vector<std::function<void()>> deque_tests;
 
 #define REGISTER_TEST(group, test) group.push_back(test)
 
@@ -37,5 +38,6 @@ void register_unordered_map_tests();
 void register_list_tests();
 void register_set_tests();
 void register_bitset_tests();
+void register_deque_tests();
 
 #endif

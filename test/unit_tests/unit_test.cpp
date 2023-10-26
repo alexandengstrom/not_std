@@ -26,5 +26,8 @@ int main()
     register_bitset_tests();
     run_tests(bitset_tests, "not_std::bitset");
 
+    register_deque_tests();
+    run_tests(deque_tests, "not_std::deque");
+
     return 0;
 }
