@@ -127,12 +127,14 @@ void not_std::deque<T>::allocate_front()
     if (block_count == max_blocks)
     {
         T **new_data = new T *[max_blocks + BLOCK_SIZE];
-        for (u_int i{0}; i < block_count; ++i)
+        for (u_int i = 0; i < block_count; ++i)
         {
             new_data[i + 1] = data[i];
         }
 
-        for (u_int i{block_count + 1}; i < max_blocks + BLOCK_SIZE; ++i)
+        new_data[0] = nullptr;
+
+        for (u_int i = block_count + 1; i < max_blocks + BLOCK_SIZE; ++i)
         {
             new_data[i] = nullptr;
         }
@@ -141,12 +143,6 @@ void not_std::deque<T>::allocate_front()
         data = new_data;
         max_blocks += BLOCK_SIZE;
     }
-
-    // if (data[0])
-    // {
-    //     delete[] data[0];
-    //     data[0] = nullptr;
-    // }
 
     data[0] = new T[BLOCK_SIZE];
     ++block_count;
@@ -171,12 +167,6 @@ void not_std::deque<T>::allocate_back()
         delete[] data;
         data = new_data;
         max_blocks += BLOCK_SIZE;
-    }
-
-    if (data[block_count])
-    {
-        delete[] data[block_count];
-        data[block_count] = nullptr;
     }
 
     data[block_count] = new T[BLOCK_SIZE];
